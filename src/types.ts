@@ -2305,6 +2305,13 @@ export const ServerResultSchema = z.union([
 ]);
 
 export class McpError extends Error {
+    /**
+     * The message without the `MCP error <code>: ` prefix that
+     * {@linkcode McpError.message} carries, as it should appear in the
+     * JSON-RPC `error.message` field.
+     */
+    public readonly rawMessage: string;
+
     constructor(
         public readonly code: number,
         message: string,
@@ -2312,6 +2319,7 @@ export class McpError extends Error {
     ) {
         super(`MCP error ${code}: ${message}`);
         this.name = 'McpError';
+        this.rawMessage = message;
     }
 
     /**
